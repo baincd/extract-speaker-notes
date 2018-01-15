@@ -263,6 +263,44 @@ describe('extract-speaker-notes-from-html',function() {
     )
   })
 
+  it('should find a header tag that is not a sibling', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <div>
+                <h6>Section Header</h6>
+              </div>
+              <aside class="notes">
+                I'm a note
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      "# Section Header\n" +
+      "I'm a note"
+    )
+  })
+
+
+  it('should not use the header tag from a child section', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <h6>Outer Header</h6>
+              <aside class="notes">
+                I'm a note
+              </aside>
+              <section>
+                <h1>Inner Header</h1>
+              </section>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      "# Outer Header\n" +
+      "I'm a note"
+    )
+  })
+
   htmlBoilerplate = function (slides) {
     return "" +
     `<html>

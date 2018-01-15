@@ -26,13 +26,14 @@ getHeader = function(aside) {
   if ($(aside).text().trim().startsWith("#")) {
     return "";
   }
-  if ($(aside).parent().parent().is("section")) {
+  section = $(aside).parent()
+  if (section.parent().is("section")) {
     headerPrefix = "## "
   } else {
     headerPrefix = "# "
   }
   for (i = 1; i <= 6; i++) {
-    h = $(aside).siblings("h" + i)
+    h = section.find("h" + i).toArray().filter(h => $(h).closest('section').is(section))
     if (h.length) {
       return headerPrefix + $(h[0]).text()
     }
