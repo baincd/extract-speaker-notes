@@ -1,6 +1,6 @@
 # extract-speaker-notes
 
-This script extracts and saves [speaker notes](https://github.com/hakimel/reveal.js/#speaker-notes) from a reveal.js(https://github.com/hakimel/reveal.js/) presentation.
+This script extracts and saves [speaker notes](https://github.com/hakimel/reveal.js/#speaker-notes) from a [reveal.js](https://github.com/hakimel/reveal.js/) presentation.
 
 Speaker notes can be kept with the presentation, and this script can be used to extract the speaker notes incase the speaker notes window cannot be used.
 
