@@ -301,6 +301,85 @@ describe('extract-speaker-notes-from-html',function() {
     )
   })
 
+  it('should not use blank lines to determine indentation', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <aside class="notes">
+` + "    \n" + // make sure there are 4 spaces
+`                I'm a note
+                  Me Too!
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      DEFAULT_NEXT_SLIDE_HEADER +
+      "I'm a note\n" +
+      "  Me Too!"
+    )
+  })
+
+  it('should not treat an invalid header in the aside as a header', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <aside class="notes">
+                #NotAHeader
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      DEFAULT_NEXT_SLIDE_HEADER +
+      "#NotAHeader"
+    )
+  })
+
+  it('should treat a second level header in the aside as a header', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <aside class="notes">
+                ## I am a Header
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      "## I am a Header"
+    )
+  })
+
+  it('should not treat an octothorp that does not start the aside as a header', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <aside class="notes">
+                I am not a header
+                # Neither am I
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      DEFAULT_NEXT_SLIDE_HEADER +
+      "I am not a header\n" +
+      "# Neither am I"
+    )
+  })
+
+  it('should not treat seven octothorps as a header', function() {
+    actual = classUnderTest.extractNotes(htmlBoilerplate(`
+    				<section>
+              <aside class="notes">
+                ####### I am not a header
+              </aside>
+            </section>
+      `))
+
+    expect(actual).toBe(
+      DEFAULT_NEXT_SLIDE_HEADER +
+      "####### I am not a header"
+    )
+  })
+
   htmlBoilerplate = function (slides) {
     return "" +
     `<html>

@@ -4,7 +4,11 @@ const cheerio = require('cheerio')
 const rightTrimRegEx = /\s*$/
 
 getIndentRegEx = function(lines) {
-  indentMatch = lines[0].match(/^(\s*)\S/)
+  let i = 0;
+  let indentMatch = undefined;
+  while (!indentMatch) {
+    indentMatch = lines[i++].match(/^(\s*)\S/)
+  }
   if (indentMatch) {
     indent = indentMatch[1]
   } else {
@@ -23,7 +27,7 @@ getLines = function(aside) {
 }
 
 getHeader = function(aside) {
-  if ($(aside).text().trim().startsWith("#")) {
+  if ($(aside).text().match(/^\s*#{1,6} /)) {
     return "";
   }
   section = $(aside).parent()
