@@ -52,7 +52,7 @@ describe('extract-speaker-notes-from-html',function() {
     				<section>
               <aside class="notes">
                 These are some notes
-                This is line 2 with space before and after
+                This is line 2 with space before and after` + "   " + `
                 I am line 3
               </aside>
             </section>

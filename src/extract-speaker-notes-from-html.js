@@ -2,12 +2,16 @@ const fs = require('fs')
 const cheerio = require('cheerio')
 
 const rightTrimRegEx = /\s*$/
+const indentationRegEx = /^(\s*)\S/
+const hasNonSpaceCharRegEx = /\S/
+
+let $
 
 getIndentRegEx = function(lines) {
-  let i = 0;
-  let indentMatch = undefined;
+  let i = 0
+  let indentMatch
   while (!indentMatch) {
-    indentMatch = lines[i++].match(/^(\s*)\S/)
+    indentMatch = lines[i++].match(indentationRegEx)
   }
   if (indentMatch) {
     indent = indentMatch[1]
@@ -19,8 +23,8 @@ getIndentRegEx = function(lines) {
 }
 
 getLines = function(aside) {
-  lines = $(aside).text().split("\n")
-  if (!lines[0].match(/\S/)) {
+  let lines = $(aside).text().split("\n")
+  if (!lines[0].match(hasNonSpaceCharRegEx)) {
     lines.shift()
   }
   return lines
@@ -30,14 +34,13 @@ getHeader = function(aside) {
   if ($(aside).text().match(/^\s*#{1,6} /)) {
     return "";
   }
-  section = $(aside).parent()
+  let section = $(aside).parent()
+  let headerPrefix = "# "
   if (section.parent().is("section")) {
     headerPrefix = "## "
-  } else {
-    headerPrefix = "# "
   }
-  for (i = 1; i <= 6; i++) {
-    h = section.find("h" + i).toArray().filter(h => $(h).closest('section').is(section))
+  for (let i = 1; i <= 6; i++) {
+    let h = section.find("h" + i).toArray().filter(x => $(x).closest('section').is(section))
     if (h.length) {
       return headerPrefix + $(h[0]).text()
     }
@@ -46,8 +49,8 @@ getHeader = function(aside) {
 }
 
 mapAsideElToNotes = function(aside) {
-  lines = getLines(aside)
-  indentRegEx = getIndentRegEx(lines)
+  let lines = getLines(aside)
+  let indentRegEx = getIndentRegEx(lines)
 
   return getHeader(aside) + "\n" +
     lines.map(x => x.replace(rightTrimRegEx,""))
@@ -59,7 +62,7 @@ mapAsideElToNotes = function(aside) {
 exports.extractNotes = function(html){
   $ = cheerio.load(html)
 
-  noteEls = $('body').find('aside')
+  let noteEls = $('body').find('aside')
 
   if (noteEls.length == 0) {
     return ""
@@ -67,6 +70,6 @@ exports.extractNotes = function(html){
 
   return noteEls.toArray()
     .map(mapAsideElToNotes)
-   .join("\n\n")
-   .trim()
+    .join("\n\n")
+    .trim()
 }
