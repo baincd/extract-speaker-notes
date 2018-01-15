@@ -1,0 +1,67 @@
+const fs = require('fs')
+const cheerio = require('cheerio')
+
+const rightTrimRegEx = /\s*$/
+
+getIndentRegEx = function(lines) {
+  indentMatch = lines[0].match(/^(\s*)\S/)
+  if (indentMatch) {
+    indent = indentMatch[1]
+  } else {
+    indent = ""
+  }
+  return new RegExp("^" + indent)
+
+}
+
+getLines = function(aside) {
+  lines = $(aside).text().split("\n")
+  if (!lines[0].match(/\S/)) {
+    lines.shift()
+  }
+  return lines
+}
+
+getHeader = function(aside) {
+  if ($(aside).text().trim().startsWith("#")) {
+    return "";
+  }
+  if ($(aside).parent().parent().is("section")) {
+    headerPrefix = "## "
+  } else {
+    headerPrefix = "# "
+  }
+  for (i = 1; i <= 6; i++) {
+    h = $(aside).siblings("h" + i)
+    if (h.length) {
+      return headerPrefix + $(h[0]).text()
+    }
+  }
+  return headerPrefix + "[NEXT SLIDE]"
+}
+
+mapAsideElToNotes = function(aside) {
+  lines = getLines(aside)
+  indentRegEx = getIndentRegEx(lines)
+
+  return getHeader(aside) + "\n" +
+    lines.map(x => x.replace(rightTrimRegEx,""))
+    .map(x => x.replace(indentRegEx,""))
+    .join("\n")
+    .trim();
+}
+
+exports.extractNotes = function(html){
+  $ = cheerio.load(html)
+
+  noteEls = $('body').find('aside')
+
+  if (noteEls.length == 0) {
+    return ""
+  }
+
+  return noteEls.toArray()
+    .map(mapAsideElToNotes)
+   .join("\n\n")
+   .trim()
+}

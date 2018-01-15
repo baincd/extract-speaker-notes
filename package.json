@@ -1,0 +1,22 @@
+{
+  "name": "extract-speaker-notes",
+  "version": "1.0.0-ALPHA-b1",
+  "description": "Extract and save speaker notes from a reveal.js presentation ",
+  "main": "extract-speaker-notes.js",
+  "scripts": {
+    "test": "jasmine",
+    "start": "node src/main.js"
+  },
+  "keywords": [
+    "reveal.js",
+    "presentation"
+  ],
+  "author": "Christopher D. Bain",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.8.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2"
+  }
+}
