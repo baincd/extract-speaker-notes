@@ -13,7 +13,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should extract when one set of notes', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 These are some notes
               </aside>
@@ -26,7 +26,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should extract from two sets of notes', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 These are some notes
               </aside>
@@ -49,7 +49,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should trim extra space from lines', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 These are some notes
                 This is line 2 with space before and after` + "   " + `
@@ -76,7 +76,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should maintain indentation within section', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 These are some notes
                 \tindented with 1 tab
@@ -98,7 +98,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should keep first line if any text on it', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">  hi
   These are some notes
               </aside>
@@ -115,7 +115,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should keep last line if any text on it', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 These are some notes
                   I am the last line</aside>
@@ -132,7 +132,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should not encode text', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <aside class="notes">
                 I'm a note
               </aside>
@@ -148,7 +148,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should use the first h1 header if exists', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <p>an element</p>
               <h1>Section Header</h1>
               <p>more text</p>
@@ -167,7 +167,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should use the first h2 header if exists', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <p>an element</p>
               <h2>Section Header</h2>
               <p>more text</p>
@@ -186,7 +186,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should use the highest level header if multiple levels exist regardless of order', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <p>an element</p>
               <h4>Section Header</h4>
               <h3>Really The Header</h3>
@@ -206,7 +206,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should not add a header if the notes already include a header', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
 
-    				<section>
+            <section>
               <p>an element</p>
               <h4>Header 4</h4>
               <h3>Header 3</h3>
@@ -227,7 +227,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should add the default header as a second level header if the section is nested', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
           <section>
-    				<section>
+            <section>
               <p>an element</p>
               <p>more text</p>
               <aside class="notes">
@@ -246,7 +246,7 @@ describe('extract-speaker-notes-from-html',function() {
   it('should add the header as a second level header if the section is nested', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
           <section>
-    				<section>
+            <section>
               <p>an element</p>
               <h6>Hi Mom</h6>
               <p>more text</p>
@@ -265,7 +265,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should find a header tag that is not a sibling', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <div>
                 <h6>Section Header</h6>
               </div>
@@ -284,7 +284,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should not use the header tag from a child section', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <h6>Outer Header</h6>
               <aside class="notes">
                 I'm a note
@@ -303,7 +303,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should not use blank lines to determine indentation', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <aside class="notes">
 ` + "    \n" + // make sure there are 4 spaces
 `                I'm a note
@@ -321,7 +321,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should not treat an invalid header in the aside as a header', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <aside class="notes">
                 #NotAHeader
               </aside>
@@ -336,7 +336,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should treat a second level header in the aside as a header', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <aside class="notes">
                 ## I am a Header
               </aside>
@@ -350,7 +350,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should not treat an octothorp that does not start the aside as a header', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <aside class="notes">
                 I am not a header
                 # Neither am I
@@ -367,7 +367,7 @@ describe('extract-speaker-notes-from-html',function() {
 
   it('should not treat seven octothorps as a header', function() {
     actual = classUnderTest.extractNotes(htmlBoilerplate(`
-    				<section>
+            <section>
               <aside class="notes">
                 ####### I am not a header
               </aside>
