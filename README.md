@@ -24,15 +24,15 @@ npm install
 ## Usage
 To extract speaker notes to the default location (notes.md)
 ```
-npm start /path-to-revealjs-presentation/index.html
+node extract-speaker-notes.js path-to-revealjs-presentation/index.html
 ```
 
 To extract speaker notes to a specified location
 ```
-npm start -- /path-to-revealjs-presentation/index.html --output /dir-for-output/outputfile.md
+node extract-speaker-notes.js path-to-revealjs-presentation/index.html --output dir-for-output/outputfile.md
 ```
 
-To override an existing file
+To override an existing notes.md file
 ```
-npm start -- /path-to-revealjs-presentation/index.html -O
+node extract-speaker-notes.js path-to-revealjs-presentation/index.html -O
 ```

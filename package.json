@@ -5,7 +5,7 @@
   "main": "extract-speaker-notes.js",
   "scripts": {
     "test": "jasmine",
-    "start": "node src/main.js"
+    "start": "node extract-speaker-notes.js"
   },
   "keywords": [
     "reveal.js",
